@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CAPTCHA Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f5f5f5;
+      margin: 0;
+    }
+
+    .container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .captcha-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .captcha-text {
+      font-size: 24px;
+      font-weight: bold;
+      padding: 10px;
+      background-color: #e0e0e0;
+      border-radius: 4px;
+      margin-right: 10px;
+      user-select: none;
+    }
+
+    .captcha-text span {
+      display: inline-block;
+      transform: rotate(10deg);
+      margin: 0 2px;
+    }
+
+    .refresh-button {
+      background-color: #0070ba;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    .refresh-button:hover {
+      background-color: #005f9e;
+    }
+
+    input[type="text"] {
+      width: 200px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-bottom: 20px;
+    }
+
+    .submit-button {
+      background-color: #0070ba;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+
+    .submit-button:hover {
+      background-color: #005f9e;
+    }
+
+    .message {
+      margin-top: 20px;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .success {
+      color: green;
+    }
+
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>CAPTCHA Generator</h1>
+
+    <!-- CAPTCHA Display -->
+    <div class="captcha-container">
+      <div class="captcha-text" id="captchaText"></div>
+      <button class="refresh-button" onclick="generateCaptcha()">↻</button>
+    </div>
+
+    <!-- User Input -->
+    <input type="text" id="captchaInput" placeholder="Enter CAPTCHA">
+
+    <!-- Submit Button -->
+    <button class="submit-button" onclick="validateCaptcha()">Submit</button>
+
+    <!-- Validation Message -->
+    <div class="message" id="message"></div>
+  </div>
+
+  <script>
+    // Generate a random CAPTCHA
+    function generateCaptcha() {
+      const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+      let captcha = "";
+      for (let i = 0; i < 6; i++) {
+        captcha += chars[Math.floor(Math.random() * chars.length)];
+      }
+      document.getElementById('captchaText').innerHTML = captcha
+        .split('')
+        .map(char => `<span>${char}</span>`)
+        .join('');
+      document.getElementById('message').textContent = "";
+    }
+
+    // Validate the user's input
+    function validateCaptcha() {
+      const captchaText = document.getElementById('captchaText').textContent;
+      const userInput = document.getElementById('captchaInput').value;
+
+      if (userInput === captchaText) {
+        document.getElementById('message').textContent = "CAPTCHA is correct!";
+        document.getElementById('message').className = "message success";
+      } else {
+        document.getElementById('message').textContent = "CAPTCHA is incorrect. Try again.";
+        document.getElementById('message').className = "message error";
+      }
+    }
+
+    // Generate CAPTCHA on page load
+    window.onload = generateCaptcha;
+  </script>
+</body>
+</html>
